@@ -5,7 +5,6 @@
 
 var express = require('express');
 var routes = require('./routes');
-var user = require('./routes/user');
 var caster = require('./routes/caster');
 var http = require('http');
 var path = require('path');
@@ -30,8 +29,8 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/users', user.list);
 app.get('/browse/*', caster.browse);
+app.get('/stream/*', caster.stream);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

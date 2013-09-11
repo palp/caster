@@ -44,7 +44,6 @@ exports.stream = function (req, res) {
             res.end("" + err);
         } else {
             if (stat.isFile()) {
-                res.render('play', {title: 'playing ' + folder, url: folder});
                 res.writeHead(200, {
                     'Content-Type': mime.lookup(home_folder + folder),
                     'Content-Length': stat.size});
@@ -55,8 +54,6 @@ exports.stream = function (req, res) {
                     .withAudioChannels(2)
                     .toFormat('matroska')
                     .writeToStream(res);//, function(retcode, err) {console.log(err)});
-                //var stream = fs.createReadStream(home_folder + folder);
-                //stream.pipe(res);
             }
         }
     });
