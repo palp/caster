@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    h1= title
+    ul
+        if parent
+            li
+                a(href='/browse'+parent) ..
+        each file in files
+            li
+                a(href=file.url)=file.name
