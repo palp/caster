@@ -16,9 +16,10 @@ exports.browse = function(req, res) {
             res.end(""+err);
         } else {
             if (stat.isFile()) {
+                var video_url = 'http://' + req.headers.host + '/stream' + folder;
                 res.render('play', {
                     title: 'playing ' + folder,
-                    url: 'http://' + req.headers.host + url.parse(req.url).pathname + '/stream' + folder});
+                    url: video_url });
             } else {
                 folder = S(folder).ensureRight('/');
                 fs.readdir(home_folder + folder, function(err, files) {

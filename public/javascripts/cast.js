@@ -1,4 +1,4 @@
-var appId = 'caster';
+var appId = '6b626c8c-55ee-433f-8166-bfbb31b5ef07';
 
 function cast(url) {
     var cast_api, cv_activity;
@@ -31,7 +31,6 @@ function cast(url) {
 
     doLaunch = function (receiver) {
         var request = new cast.LaunchRequest(appId, receiver);
-        request.parameters = "url=" + url;
         request.description = new cast.LaunchDescription();
         request.description.text = "palpcast video";
         request.description.url = url;
@@ -43,6 +42,9 @@ function cast(url) {
             cv_activity = activity;
             // update UI to reflect that the receiver has received the
             // launch command and should start video playback.
+            cast_api.sendMessage(cv_activity.activityId, "palp", {type: 'media', url: url}, function (err) {
+                console.log ('sendmessage' + err)
+            });
         } else if (activity.status == "error") {
             cv_activity = null;
         }
