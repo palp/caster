@@ -12,13 +12,14 @@ Chromecast device must be on the same network as the media server. Making the se
 Audio will be transcoded to MP3.
 
 Instructions:
-1. Set up a publically accessible website for the receiver. Only static content will be served from this site.
-2. [Get whitelisted](https://developers.google.com/cast/whitelisting). Use the URL for the site above.
-3. Configure the base folder for media in routes/caster.js.
-4. Set your own AppId in public/javascripts/cast.js and receiver/cast.js.
-5. Upload the receiver files to your whitelisted site.
-6. Start the node.js application
-7. Browse to the application using your internal IP address (i.e. 192.168.0.10:3000). It is important to use an IP that the Chromecast device will be able to reach. Localhost will not work.
+
+1.  Set up a publically accessible website for the receiver. Only static content will be served from this site.
+2.  [Get whitelisted](https://developers.google.com/cast/whitelisting). Use the URL for the site above.
+3.  Configure the base folder for media in routes/caster.js.
+4.  Set your own AppId in public/javascripts/cast.js and receiver/cast.js.
+5.  Upload the receiver files to your whitelisted site.
+6.  Start the node.js application
+7.  Browse to the application using your internal IP address (i.e. 192.168.0.10:3000). It is important to use an IP that the Chromecast device will be able to reach. Localhost will not work.
 
 Known Issues:
 - No UI for Chromecast device selection. The first device found is used.
