@@ -2,8 +2,25 @@ extends layout
 
 block scripts
     script(src='/javascripts/cast.js')
-    script
-        $(function() {cast("#{url}")});
+    script.
+        var isPaused = false;
+        $(function() {
+            cast("#{url}")
+            $('#play').click(function() {
+                if (cv_activity) {
+                    if (isPaused) {
+                        cast_api.playMedia(cv_activity.activityId, new cast.MediaPlayRequest());
+                        $('#play').html('pause');
+                        isPaused = false;
+                    } else {
+                        cast_api.pauseMedia(cv_activity.activityId);
+                        $('#play').html('resume');
+                        isPaused = true;
+                    }
+                }
+            });
+        });
 
 block content
     h1= title
+    button(id='play') pause

@@ -46,8 +46,7 @@ exports.stream = function (req, res) {
         } else {
             if (stat.isFile()) {
                 res.writeHead(200, {
-                    'Content-Type': mime.lookup(home_folder + folder),
-                    'Content-Length': stat.size});
+                    'Content-Type': mime.lookup(home_folder + folder)});
                 var proc = new ffmpeg({ source: home_folder + folder, timeout: 432000, nolog: true})
                     .withVideoCodec('copy')
                     .withAudioBitrate('128k')

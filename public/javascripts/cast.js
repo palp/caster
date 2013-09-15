@@ -1,7 +1,8 @@
 var appId = '6b626c8c-55ee-433f-8166-bfbb31b5ef07';
+var cv_activity = null;
+var cast_api;
 
 function cast(url) {
-    var cast_api, cv_activity;
 
     if (cast && cast.isAvailable) {
         // Cast is known to be available
