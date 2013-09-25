@@ -5,6 +5,7 @@ var _ = require('underscore');
 var S = require('string');
 var mime = require('mime');
 var ffmpeg = require('fluent-ffmpeg');
+var winston = require('winston');
 var config = require('config').Caster;
 var homeFolder = config.homeFolder;
 
@@ -38,9 +39,10 @@ exports.browse = function(req, res) {
 
 exports.stream = function (req, res) {
     var folder = S(path.normalize('/' + req.params[0]));
-
+    winston.info("preparing to stream " + homeFolder + folder);
     fs.stat(homeFolder + folder, function (err, stat) {
         if (err) {
+            winston.error(err);
             res.writeHead(404, {'Content-Type': 'text/html'});
             res.end("" + err);
         } else {
@@ -53,7 +55,10 @@ exports.stream = function (req, res) {
                     .withAudioCodec('mp3')
                     .withAudioChannels(2)
                     .toFormat('matroska')
-                    .writeToStream(res);//, function(retcode, err) {console.log(err)});
+                    .writeToStream(res, function(retcode, err) {winston.error("ffmpeg error:  " + err)});
+            }
+            else {
+                winston.err("not a file");
             }
         }
     });
