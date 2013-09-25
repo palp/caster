@@ -5,12 +5,12 @@ var _ = require('underscore');
 var S = require('string');
 var mime = require('mime');
 var ffmpeg = require('fluent-ffmpeg');
-
-var home_folder = '/Volumes/video';
+var config = require('config').Caster;
+var homeFolder = config.homeFolder;
 
 exports.browse = function(req, res) {
     var folder = S(path.normalize('/' + req.params[0]));
-    fs.stat(home_folder + folder, function (err, stat) {
+    fs.stat(homeFolder + folder, function (err, stat) {
         if( err ) {
             res.writeHead(404, {'Content-Type': 'text/html'});
             res.end(""+err);
@@ -22,7 +22,7 @@ exports.browse = function(req, res) {
                     url: video_url });
             } else {
                 folder = S(folder).ensureRight('/');
-                fs.readdir(home_folder + folder, function(err, files) {
+                fs.readdir(homeFolder + folder, function(err, files) {
                     var results = _.map(files, function(file) {
                         return {url: "/browse" + folder + file, name: file}
                     });
