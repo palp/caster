@@ -39,15 +39,15 @@ exports.browse = function(req, res) {
 exports.stream = function (req, res) {
     var folder = S(path.normalize('/' + req.params[0]));
 
-    fs.stat(home_folder + folder, function (err, stat) {
+    fs.stat(homeFolder + folder, function (err, stat) {
         if (err) {
             res.writeHead(404, {'Content-Type': 'text/html'});
             res.end("" + err);
         } else {
             if (stat.isFile()) {
                 res.writeHead(200, {
-                    'Content-Type': mime.lookup(home_folder + folder)});
-                var proc = new ffmpeg({ source: home_folder + folder, timeout: 432000, nolog: true})
+                    'Content-Type': mime.lookup(homeFolder + folder)});
+                var proc = new ffmpeg({ source: homeFolder + folder, timeout: 432000, nolog: true})
                     .withVideoCodec('copy')
                     .withAudioBitrate('128k')
                     .withAudioCodec('mp3')
