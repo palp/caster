@@ -5,6 +5,7 @@ var _ = require('underscore');
 var S = require('string');
 var mime = require('mime');
 var ffmpeg = require('fluent-ffmpeg');
+var Metalib = require('fluent-ffmpeg').Metadata;
 var winston = require('winston');
 var config = require('config').Caster;
 var homeFolder = config.homeFolder;
@@ -18,9 +19,13 @@ exports.browse = function(req, res) {
         } else {
             if (stat.isFile()) {
                 var video_url = 'http://' + req.headers.host + '/stream' + folder;
-                res.render('play', {
-                    title: 'playing ' + folder,
-                    url: video_url });
+                var metaObject = new Metalib(homeFolder + folder, function (metadata, err) {
+                    res.render('play', {
+                        title: 'playing ' + folder,
+                        url: video_url,
+                        duration: metadata.durationsec});
+                })
+
             } else {
                 folder = S(folder).ensureRight('/');
                 fs.readdir(homeFolder + folder, function(err, files) {
@@ -48,7 +53,10 @@ exports.stream = function (req, res) {
         } else {
             if (stat.isFile()) {
                 res.writeHead(200, {
-                    'Content-Type': mime.lookup(homeFolder + folder)});
+                    'Content-Type': mime.lookup(homeFolder + folder),
+                    'Accept-Ranges': 'bytes',
+                    'Content-Length': stat.size
+                });
                 var proc = new ffmpeg({ source: homeFolder + folder, timeout: 432000, nolog: true})
                     .withVideoCodec('copy')
                     .withAudioBitrate('128k')

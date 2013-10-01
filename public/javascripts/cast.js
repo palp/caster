@@ -49,6 +49,32 @@ function cast(url) {
         } else if (activity.status == "error") {
             cv_activity = null;
         }
-    };
+        var duration = $('div.progress-bar').attr('aria-valuemax');
+        window.setInterval(function() {cast_api.getMediaStatus(cv_activity.activityId, function(status){
+            $('div.progress-bar').attr('aria-valuenow', status.status.position);
+            $('div.progress-bar').width(((status.status.position / duration) * 100) + '%');
+        })}, 1000)
 
+        $('#play').click(function() {
+            if (cv_activity) {
+                if (isPaused) {
+                    cast_api.playMedia(cv_activity.activityId, new cast.MediaPlayRequest());
+                    $('#play').html('pause');
+                    isPaused = false;
+                } else {
+                    cast_api.pauseMedia(cv_activity.activityId);
+                    $('#play').html('resume');
+                    isPaused = true;
+                }
+            }
+        });
+
+        $('div.progress').click(function(e) {
+            console.log(e.offsetX);
+            var position = e.offsetX / e.target.clientWidth;
+            var timePosition = Math.round(duration * position);
+            console.log(timePosition);
+            cast_api.playMedia(cv_activity.activityId, new cast.MediaPlayRequest(timePosition));
+        })
+    };
 }

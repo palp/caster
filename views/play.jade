@@ -5,22 +5,14 @@ block scripts
     script.
         var isPaused = false;
         $(function() {
-            cast("#{url}")
-            $('#play').click(function() {
-                if (cv_activity) {
-                    if (isPaused) {
-                        cast_api.playMedia(cv_activity.activityId, new cast.MediaPlayRequest());
-                        $('#play').html('pause');
-                        isPaused = false;
-                    } else {
-                        cast_api.pauseMedia(cv_activity.activityId);
-                        $('#play').html('resume');
-                        isPaused = true;
-                    }
-                }
-            });
+            cast("#{url}");
         });
 
 block content
     h1= title
     button(id='play') pause
+    br
+    br
+    div.progress
+        div.progress-bar(role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax=duration style='width: 0%')
+            span.sr-only
